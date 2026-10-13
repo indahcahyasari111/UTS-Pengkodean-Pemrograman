@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voucher Kas Keluar | UTS Pemrograman</title>
+  <style>
+    :root { color-scheme: light; --navy:#17324d; --blue:#245c9c; --pale:#eef4fb; --border:#d7e0ea; --muted:#64748b; --green:#176b45; --green-bg:#e7f7ee; --red:#a92e35; --red-bg:#fff0f0; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, Segoe UI, Arial, sans-serif; color:#1e293b; background:#f4f7fb; }
+    .page { max-width:1180px; padding:28px 18px 48px; margin:0 auto; }
+    header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:22px; }
+    .eyebrow { color:var(--blue); text-transform:uppercase; letter-spacing:.11em; font-weight:800; font-size:12px; margin-bottom:8px; }
+    h1 { margin:0; color:var(--navy); font-size:clamp(25px,4vw,34px); }
+    .sub { color:var(--muted); margin:9px 0 0; line-height:1.55; }
+    .pill { white-space:nowrap; padding:8px 12px; border-radius:999px; background:#e8eff8; color:#244b76; font-weight:700; font-size:12px; }
+    .card { background:#fff; border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:0 6px 22px rgba(23,50,77,.045); margin-bottom:18px; }
+    h2 { font-size:18px; margin:0 0 17px; color:var(--navy); }
+    .form-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:15px; }
+    label { display:block; font-size:13px; font-weight:750; margin-bottom:7px; color:#34465c; }
+    input, select, textarea { width:100%; border:1px solid #cbd5e1; border-radius:9px; padding:11px 12px; font:inherit; background:#fff; color:#172033; outline:none; }
+    input:focus, select:focus, textarea:focus { border-color:#5f91ca; box-shadow:0 0 0 3px rgba(36,92,156,.12); }
+    input:disabled, select:disabled { background:#f1f5f9; color:#64748b; }
+    .hint { font-size:12px; color:var(--muted); margin-top:6px; }
+    .table-wrap { overflow-x:auto; }
+    table { border-collapse:collapse; width:100%; min-width:760px; }
+    th { text-align:left; color:#475569; font-size:12px; text-transform:uppercase; letter-spacing:.04em; padding:12px 10px; background:#f7f9fc; border-bottom:1px solid var(--border); }
+    td { padding:10px; border-bottom:1px solid #edf1f5; vertical-align:middle; }
+    td input, td select { padding:10px; }
+    th:nth-child(2), th:nth-child(3), td:nth-child(2), td:nth-child(3) { text-align:right; }
+    .number { text-align:right; min-width:135px; }
+    .remove { border:1px solid #e6b7ba; background:#fff; color:#a92e35; border-radius:8px; padding:9px 10px; cursor:pointer; font-weight:700; }
+    .remove:disabled { opacity:.4; cursor:not-allowed; }
+    .totals { display:flex; justify-content:flex-end; gap:12px; margin-top:16px; flex-wrap:wrap; }
+    .total-box { padding:13px 16px; border:1px solid var(--border); border-radius:10px; min-width:205px; }
+    .total-label { color:var(--muted); font-size:12px; margin-bottom:5px; }
+    .total-value { font-size:19px; font-weight:800; color:var(--navy); }
+    .status { border-radius:10px; padding:13px 15px; margin-top:16px; font-weight:750; display:flex; gap:10px; align-items:flex-start; line-height:1.45; }
+    .status.ok { background:var(--green-bg); color:var(--green); }
+    .status.bad { background:var(--red-bg); color:var(--red); }
+    .actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:18px; }
+    button.primary, button.secondary { border-radius:9px; border:1px solid transparent; padding:11px 16px; font-weight:800; font-size:14px; cursor:pointer; }
+    button.primary { background:var(--blue); color:white; }
+    button.primary:disabled { background:#a8b5c5; color:#f8fafc; cursor:not-allowed; }
+    button.secondary { background:white; color:#244b76; border-color:#cbd5e1; }
+    .notice { border-left:4px solid #d59a32; background:#fff8e9; color:#724e14; padding:13px 15px; border-radius:8px; font-size:13px; line-height:1.5; }
+    .message { margin-top:13px; white-space:pre-wrap; overflow-wrap:anywhere; font:12px/1.5 Consolas, monospace; color:#334155; }
+    .footer-note { font-size:12px; color:var(--muted); text-align:center; margin-top:22px; }
+    @media (max-width:720px) { .form-grid { grid-template-columns:1fr; } header { display:block; } .pill { display:inline-block; margin-top:13px; } .card { padding:16px; } .totals { justify-content:stretch; } .total-box { flex:1; min-width:140px; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div>
+        <div class="eyebrow">Sistem Informasi Akuntansi · Purwarupa</div>
+        <h1>Voucher Kas Keluar</h1>
+        <p class="sub">Formulir pencatatan transaksi pengeluaran kas dengan pemeriksaan keseimbangan debit dan kredit secara langsung.</p>
+      </div>
+      <div class="pill">Mode Demo Lokal</div>
+    </header>
+
+    <section class="card" aria-labelledby="head-title">
+      <h2 id="head-title">Informasi Transaksi</h2>
+      <div class="form-grid">
+        <div>
+          <label for="trx-date">Tanggal transaksi *</label>
+          <input id="trx-date" type="date" />
+        </div>
+        <div>
+          <label for="ref-number">Nomor bukti *</label>
+          <input id="ref-number" type="text" maxlength="50" placeholder="Contoh: BKK-001" />
+        </div>
+        <div>
+          <label for="description">Deskripsi *</label>
+          <input id="description" type="text" maxlength="250" placeholder="Contoh: Pembelian perlengkapan kantor" />
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="lines-title">
+      <h2 id="lines-title">Rincian Jurnal</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th style="width:43%">Akun</th><th style="width:22%">Debit (Rp)</th><th style="width:22%">Kredit (Rp)</th><th style="width:13%">Aksi</th></tr>
+          </thead>
+          <tbody id="lines-body"></tbody>
+          <tfoot>
+            <tr>
+              <th>Total</th>
+              <th id="total-debit" class="number">Rp0</th>
+              <th id="total-credit" class="number">Rp0</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="totals">
+        <div class="total-box"><div class="total-label">Total Debit</div><div id="total-debit-card" class="total-value">Rp0</div></div>
+        <div class="total-box"><div class="total-label">Total Kredit</div><div id="total-credit-card" class="total-value">Rp0</div></div>
+      </div>
+      <div id="balance-status" class="status bad" role="status" aria-live="polite">● Belum seimbang — isi akun dan nominal debit/kredit.</div>
+      <div class="actions">
+        <button type="button" id="add-line" class="secondary">＋ Tambah Baris</button>
+        <button type="button" id="submit-voucher" class="primary" disabled>Submit Voucher</button>
+      </div>
+      <div id="submit-message" class="message" aria-live="polite"></div>
+    </section>
+
+    <div class="notice"><strong>Catatan pengembangan:</strong> ini merupakan prototipe frontend lokal. Tombol Submit menampilkan payload simulasi di halaman ini dan belum menyimpan data ke Supabase. Koneksi RPC, autentikasi, dan audit trail akan dikerjakan pada tahap backend berikutnya.</div>
+    <p class="footer-note">UTS Pengkodean dan Pemrograman · Purwarupa Voucher Entri Transaksi Kas Keluar</p>
+  </main>
+
+  <script>
+    'use strict';
+    const ACCOUNTS = [
+      { id: 1, code: '1-1100', name: 'Kas', cash: true },
+      { id: 2, code: '1-1200', name: 'Bank', cash: true },
+      { id: 3, code: '1-1300', name: 'Setara Kas', cash: true },
+      { id: 4, code: '5-2100', name: 'Beban Perlengkapan', cash: false },
+      { id: 5, code: '5-3100', name: 'Beban Listrik dan Air', cash: false },
+      { id: 6, code: '2-1100', name: 'Utang Usaha', cash: false },
+      { id: 7, code: '1-5100', name: 'Perlengkapan', cash: false }
+    ];
+    const $ = (id) => document.getElementById(id);
+    let lines = [newLine(), newLine()];
+
+    function newLine() { return { accountId: '', debit: '', credit: '' }; }
+    function toMinorUnits(value) {
+      const amount = Number.parseFloat(value);
+      if (!Number.isFinite(amount) || amount < 0) return 0;
+      return Math.round(amount * 100);
+    }
+    function rupiah(minorUnits) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(minorUnits / 100);
+    }
+    function escapeText(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
+    }
+    function renderLines() {
+      const body = $('lines-body');
+      body.innerHTML = '';
+      lines.forEach((line, index) => {
+        const row = document.createElement('tr');
+        const accountOptions = ACCOUNTS.map((account) => `<option value="${account.id}" ${String(line.accountId) === String(account.id) ? 'selected' : ''}>${escapeText(account.code + ' — ' + account.name)}</option>`).join('');
+        row.innerHTML = `
+          <td><select aria-label="Akun baris ${index + 1}" data-index="${index}" data-field="accountId"><option value="">Pilih akun</option>${accountOptions}</select></td>
+          <td><input class="number" aria-label="Debit baris ${index + 1}" data-index="${index}" data-field="debit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" value="${escapeText(line.debit)}"></td>
+          <td><input class="number" aria-label="Kredit baris ${index + 1}" data-index="${index}" data-field="credit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" value="${escapeText(line.credit)}"></td>
+          <td><button type="button" class="remove" data-remove="${index}" ${lines.length <= 2 ? 'disabled' : ''}>Hapus</button></td>`;
+        body.appendChild(row);
+      });
+    }
+    function getSummary() {
+      const debit = lines.reduce((sum, line) => sum + toMinorUnits(line.debit), 0);
+      const credit = lines.reduce((sum, line) => sum + toMinorUnits(line.credit), 0);
+      const lineValid = lines.every((line) => {
+        const debitValue = toMinorUnits(line.debit);
+        const creditValue = toMinorUnits(line.credit);
+        return line.accountId !== '' && ((debitValue > 0 && creditValue === 0) || (creditValue > 0 && debitValue === 0));
+      });
+      const cashCredit = lines.some((line) => {
+        const account = ACCOUNTS.find((item) => String(item.id) === String(line.accountId));
+        return Boolean(account && account.cash && toMinorUnits(line.credit) > 0);
+      });
+      const headerValid = $('trx-date').value !== '' && $('ref-number').value.trim() !== '' && $('description').value.trim() !== '';
+      const balanced = debit > 0 && debit === credit;
+      return { debit, credit, lineValid, cashCredit, headerValid, balanced };
+    }
+    function updateSummary() {
+      const summary = getSummary();
+      $('total-debit').textContent = rupiah(summary.debit);
+      $('total-credit').textContent = rupiah(summary.credit);
+      $('total-debit-card').textContent = rupiah(summary.debit);
+      $('total-credit-card').textContent = rupiah(summary.credit);
+      const status = $('balance-status');
+      if (summary.balanced && summary.lineValid && summary.cashCredit) {
+        status.className = 'status ok';
+        status.textContent = '✓ Seimbang — total debit sama dengan total kredit dan akun Kas/Bank/Setara Kas dikredit.';
+      } else {
+        status.className = 'status bad';
+        const reasons = [];
+        if (!summary.balanced) reasons.push(`Selisih ${rupiah(Math.abs(summary.debit - summary.credit))}`);
+        if (!summary.lineValid) reasons.push('Setiap baris harus memilih akun dan mengisi tepat satu sisi (debit atau kredit) dengan nominal positif');
+        if (!summary.cashCredit) reasons.push('Wajib ada kredit pada akun Kas, Bank, atau Setara Kas');
+        status.textContent = '● Belum dapat disubmit — ' + reasons.join('. ') + '.';
+      }
+      $('submit-voucher').disabled = !(summary.balanced && summary.lineValid && summary.cashCredit && summary.headerValid && lines.length >= 2);
+    }
+    $('lines-body').addEventListener('input', handleLineChange);
+    $('lines-body').addEventListener('change', handleLineChange);
+    function handleLineChange(event) {
+      const index = Number(event.target.dataset.index);
+      const field = event.target.dataset.field;
+      if (!Number.isInteger(index) || !field || !lines[index]) return;
+      lines[index][field] = event.target.value;
+      // Re-render only for selections and keep input focus stable for amount edits.
+      if (event.target.tagName === 'SELECT') renderLines();
+      updateSummary();
+    }
+    $('lines-body').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-remove]');
+      if (!button || lines.length <= 2) return;
+      lines.splice(Number(button.dataset.remove), 1);
+      renderLines();
+      updateSummary();
+    });
+    $('add-line').addEventListener('click', () => { lines.push(newLine()); renderLines(); updateSummary(); });
+    ['trx-date', 'ref-number', 'description'].forEach((id) => $(id).addEventListener('input', updateSummary));
+    $('submit-voucher').addEventListener('click', () => {
+      const summary = getSummary();
+      if (!(summary.balanced && summary.lineValid && summary.cashCredit && summary.headerValid)) return;
+      const payload = {
+        p_date: $('trx-date').value,
+        p_ref: $('ref-number').value.trim(),
+        p_desc: $('description').value.trim(),
+        p_lines: lines.map((line) => ({ account_id: Number(line.accountId), debit: toMinorUnits(line.debit) / 100, credit: toMinorUnits(line.credit) / 100 }))
+      };
+      $('submit-message').textContent = 'Simulasi payload (belum dikirim ke database):\n' + JSON.stringify(payload, null, 2);
+    });
+    renderLines();
+    updateSummary();
+  </script>
+</body>
+</html>

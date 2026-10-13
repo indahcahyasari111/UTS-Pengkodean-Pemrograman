@@ -1,0 +1,39 @@
+digraph ERD {
+  graph [rankdir=LR, bgcolor="#ffffff", pad="0.35", nodesep="0.65", ranksep="1.05", splines=ortho, fontname="Arial", label="ERD GENERAL LEDGER — SISTEM JURNAL AKUNTANSI", labelloc=t, fontsize=22, fontcolor="#172554"];
+  node [shape=plain, fontname="Arial"];
+  edge [fontname="Arial", fontsize=10, color="#475569", penwidth=1.6, arrowsize=0.8];
+
+  accounts [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" COLOR="#93C5FD">
+      <TR><TD BGCOLOR="#DBEAFE"><FONT POINT-SIZE="13"><B>chart_of_accounts</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><B>PK</B> account_id : INTEGER</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><B>UQ</B> account_code : VARCHAR(20)</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">account_name : VARCHAR(150)</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">normal_balance : CHAR(1)</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">report_classification : VARCHAR(30)</TD></TR>
+    </TABLE>>];
+
+  headers [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" COLOR="#86EFAC">
+      <TR><TD BGCOLOR="#DCFCE7"><FONT POINT-SIZE="13"><B>journal_headers</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><B>PK</B> id : BIGINT</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">trx_date : DATE</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><B>UQ</B> ref_number : VARCHAR(50)</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">description : TEXT</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">status_posting : VARCHAR(10)</TD></TR>
+    </TABLE>>];
+
+  lines [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" COLOR="#FDBA74">
+      <TR><TD BGCOLOR="#FFEDD5"><FONT POINT-SIZE="13"><B>journal_lines</B></FONT></TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><B>PK</B> id : BIGINT</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><B>FK</B> header_id : BIGINT</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><B>FK</B> account_id : INTEGER</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">debit : NUMERIC(18,2)</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">credit : NUMERIC(18,2)</TD></TR>
+    </TABLE>>];
+
+  { rank=same; accounts; headers; }
+  accounts -> lines [dir=both, arrowtail=tee, arrowhead=crow, label="  satu akun dapat dipakai di banyak baris  "];
+  headers -> lines [dir=both, arrowtail=tee, arrowhead=crow, label="  satu jurnal memiliki banyak rincian  "];
+}
